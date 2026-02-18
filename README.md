@@ -1,9 +1,9 @@
-# Drupal 7 Demo Table Module
+# Drupal 7 Custom Module Demo
 
 A simple **Drupal 7** demonstration module that:
 
 - Creates a custom database table during installation (`demo_items`)
-- Populates the table with data
+- Populates the table with initial sample data
 - Provides a page (`/demo-data`) showing all records in a HTML table
 - Uses a custom theme hook + `.tpl.php` template for rendering
 - Demonstrates basic usage of `db_select()`, `theme('table')`, `hook_menu()`, `hook_theme()`, etc.
@@ -20,4 +20,5 @@ A simple **Drupal 7** demonstration module that:
    - `sites/all/modules/custom`  
 
 3. Enable the module at `/admin/modules`
+4. Visit `/your-drupal-site-name/demo-data`
 
