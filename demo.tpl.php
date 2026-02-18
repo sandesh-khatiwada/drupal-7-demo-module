@@ -1,65 +1,46 @@
-  <?php
-  /**
-   * @file
-   * demo.tpl.php - Template for demo data table
-   *
-   * Available variables:
-   * - $header     array   Table header labels
-   * - $rows       array   Array of row data (each is associative array)
-   */
-  ?>
+<?php
+/**
+ * @file
+ * Template for demo data table
+ */
+?>
 
-  <div class="demo-data-table-wrapper">
+<div class="demo-data-table-wrapper">
 
-    <h2>Demo Records</h2>
+  <h2><?php print t('Demo Records'); ?></h2>
 
-    <?php if (empty($rows)): ?>
-      <p>No records found.</p>
-    <?php else: ?>
+  <p>
+    <?php print l(t('Add New Item'), 'demo-data/add'); ?>
+  </p>
 
-      <?php
-        
-        $table_rows = array();
-        foreach ($rows as $row) {
-          $table_rows[] = array(
-            $row['id'],
-            check_plain($row['title']),
-            check_plain($row['description'] ?: '—'),
-            $row['weight'],
-            format_date($row['created'], 'short'),
-          );
-        }
-      ?>  
+  <?php if (empty($rows)): ?>
 
-      <?php print theme('table', array(
-        'header'     => $header,
-        'rows'       => $table_rows,
-        'attributes' => array('class' => array('demo-data-table')),
-        'empty'      => t('No records available.'),
-      )); ?>
+    <p><?php print t('No records found.'); ?></p>
 
-    <?php endif; ?>
+  <?php else: ?>
 
-  </div>
+    <?php
+      $table_rows = array();
 
-  <style>
-    .demo-data-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1em 0;
-    }
-    .demo-data-table th,
-    .demo-data-table td {
-      border: 1px solid #082635;
-      padding: 8px;
-      text-align: left;
-    }
-    .demo-data-table th {
-      background: #13458b;
-      font-weight: bold;
-      color: white;
-    }
-    .demo-data-table tr:nth-child(even) {
-      background: #21b0f1;
-    }
-  </style>
+      foreach ($rows as $row) {
+        $table_rows[] = array(
+          $row['id'],
+          check_plain($row['title']),
+          check_plain($row['description'] ?: '—'),
+          $row['weight'],
+          format_date($row['created'], 'short'),
+          $row['operations'],
+        );
+      }
+    ?>
+
+    <?php print theme('table', array(
+      'header' => $header,
+      'rows' => $table_rows,
+      'attributes' => array('class' => array('demo-data-table')),
+      'empty' => t('No records available.'),
+    )); ?>
+
+  <?php endif; ?>
+
+</div>
