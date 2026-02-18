@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function demo_menu() {
+  $items = array();
+
+  $items['demo-data'] = array(
+    'title'             => t('Demo Data Table'),
+    'description'       => 'Shows records from the custom demo table',
+    'page callback'     => 'demo_data_page',
+    'access callback'   => TRUE,                    
+  );
+
+  return $items;
+}
+
+/**
+ * Page callback.
+ */
+function demo_data_page() {
+  // Fetch all records, ordered by weight then title
+  $result = db_select('demo_items', 'd')
+    ->fields('d')
+    ->orderBy('weight', 'ASC')
+    ->orderBy('title', 'ASC')
+    ->execute();
+
+  $rows = array();
+  foreach ($result as $row) {
+    $rows[] = (array) $row;
+  }
+
+  $header = array(
+    'ID',
+    'Title',
+    'Description',
+    'Weight',
+    'Created',
+  );
+
+  
+  // This basically renders the template 
+  // It tells drupal: Use the demo_data_table theme hook (which we registered in demo_theme)
+  // And, pass header and rows to it 
+  return theme('demo_data_table', array(
+    'header' => $header,
+    'rows'   => $rows,
+  ));
+}
+
+/**
+ * Implements hook_theme().
+ */   
+// This registers the theme hook called demo_data-table
+function demo_theme($existing, $type, $theme, $path) {
+  return array(
+    'demo_data_table' => array(
+      'variables' => array(
+        'header' => array(),
+        'rows'   => array(),
+      ),
+      'template'  => 'demo',           // → demo.tpl.php
+    ),
+  );
+}

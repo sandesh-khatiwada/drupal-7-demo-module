@@ -1,0 +1,4 @@
+name = Demo
+description = Demo module to create a table, populate it and fetch items to display
+core = 7.x
+package = Custom
