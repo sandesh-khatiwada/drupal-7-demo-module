@@ -154,12 +154,55 @@ function demo_item_form($form, &$form_state, $id = NULL) {
     '#value' => $id ? t('Update') : t('Add'),
   );
 
+// Client-side validation – jquery-validation 1.13.0
+$module_path = drupal_get_path('module', 'demo');
+
+$form['#attached']['js'][] = array(
+  'data' => $module_path . '/js/jquery.validate.min.js',
+  'type' => 'file',
+  'scope' => 'header',           
+  'weight' => -20,
+);
+
+$form['#attached']['js'][] = array(
+  'data' => $module_path . '/js/additional-methods.min.js',
+  'type' => 'file',
+  'scope' => 'header',
+  'weight' => -19,
+);
+
+$form['#attached']['js'][] = array(
+  'data' => $module_path . '/js/demo-form-validate.js',
+  'type' => 'file',
+  'scope' => 'header',
+  'weight' => -18,
+);
+
+// Drupal → JS settings (messages)
+$form['#attached']['js'][] = array(
+  'data' => array(
+    'demo' => array(
+      'validation' => array(
+        'title_minlength' => 3,
+        'title_required_msg' => t('Title is required.'),
+        'title_minlength_msg' => t('Title must be at least 3 characters long.'),
+        'weight_required_msg' => t('Weight is required.'),
+        'weight_number_msg' => t('Weight must be a valid number.'),
+      ),
+    ),
+  ),
+  'type' => 'setting',
+);
+
+// Prevent browser native validation conflicting
+$form['#attributes']['novalidate'] = 'novalidate';
+
   return $form;
 }
 
 
 /**
- * Validation.
+ * Server Side Validation.
  */
 function demo_item_form_validate($form, &$form_state) {
 
